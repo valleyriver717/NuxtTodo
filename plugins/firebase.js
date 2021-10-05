@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
+import { getDatabase } from 'firebase/database'
 import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -10,6 +11,8 @@ const firebaseConfig = {
   apiKey: 'AIzaSyDLokwao0ggYplRoegzgiC4SjqJfEvFYuc',
   authDomain: 'todo-list-edad0.firebaseapp.com',
   projectId: 'todo-list-edad0',
+  databaseURL:
+    'https://todo-list-edad0-default-rtdb.asia-southeast1.firebasedatabase.app',
   storageBucket: 'todo-list-edad0.appspot.com',
   messagingSenderId: '36549640225',
   appId: '1:36549640225:web:28b089d71801404c18a360',
@@ -18,4 +21,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
+const database = getDatabase(app)
 const analytics = getAnalytics(app)

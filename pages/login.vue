@@ -33,6 +33,7 @@ export default {
       const auth = getAuth()
       signInWithEmailAndPassword(auth, this.mail, this.pass)
         .then((userCredential) => {
+          console.log(userCredential)
           this.$router.push('/')
         })
         .catch((error) => {
