@@ -4,7 +4,9 @@
       <v-form>
         <v-container>
           <div class="form">
-            <p class="error">{{ error_message }}</p>
+            <p class="error">
+              {{ this.$store.getters.getError.error_message }}
+            </p>
             <h1>SIGNIN PAGE</h1>
             <v-text-field
               outlined
@@ -28,26 +30,16 @@
 </template>
 
 <script>
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-
 export default {
   data() {
     return {
       mail: '',
       pass: '',
-      error_message: '',
     }
   },
   methods: {
     signin() {
-      const auth = getAuth()
-      createUserWithEmailAndPassword(auth, this.mail, this.pass)
-        .then((userCredential) => {
-          this.$router.push('/')
-        })
-        .catch((error) => {
-          this.error_message = error.code + ':' + error.message
-        })
+      this.$store.dispatch('signin', { mail: this.mail, pass: this.pass })
     },
   },
 }

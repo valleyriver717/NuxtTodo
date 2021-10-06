@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <p class="error">{{ error_message }}</p>
+    <p class="error">{{ this.$store.getters.getError.error_message }}</p>
     <h1>LOGIN PAGE</h1>
     <v-app>
       <v-form>
@@ -18,27 +18,16 @@
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-
 export default {
   data() {
     return {
       mail: '',
       pass: '',
-      error_message: '',
     }
   },
   methods: {
     login() {
-      const auth = getAuth()
-      signInWithEmailAndPassword(auth, this.mail, this.pass)
-        .then((userCredential) => {
-          console.log(userCredential)
-          this.$router.push('/')
-        })
-        .catch((error) => {
-          this.error_message = error.code + ':' + error.message
-        })
+      this.$store.dispatch('login', { mail: this.mail, pass: this.pass })
     },
   },
 }

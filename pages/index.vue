@@ -2,11 +2,11 @@
   <section class="contai">
     <h1>MY PAGE</h1>
     <router-link to="/login">GO TO LOGIN PAGE</router-link>
-    <br>
+    <br />
     <router-link to="/signin">GO TO SIGNIN PAGE</router-link>
-    <br>
+    <br />
     <router-link to="/todos">GO TO TODOS PAGE</router-link>
-    <hr>
+    <hr />
     <v-btn @click="logout">LOGOUT</v-btn>
   </section>
 </template>
@@ -17,8 +17,7 @@ import { getAuth } from 'firebase/auth'
 export default {
   methods: {
     logout: function () {
-      getAuth().signOut()
-      this.$router.push('/login')
+      this.$store.dispatch('logout')
     },
   },
 }
