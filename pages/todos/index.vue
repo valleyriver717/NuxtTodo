@@ -7,9 +7,10 @@
       <template v-slot:default>
         <thead>
           <tr>
-            <th class="text-left">USER ID</th>
             <th class="text-left">ITEM ID</th>
             <th class="text-left">TITLE</th>
+            <th class="text-left">DETAIL</th>
+            <th class="text-left">CREATED BY</th>
           </tr>
         </thead>
         <tbody>
@@ -17,9 +18,10 @@
             v-for="(value, key) in $store.getters['data/getData']"
             v-bind:key="key"
           >
-            <td>uid</td>
             <td @click="deleteData(key)">{{ key }}</td>
             <td>{{ value.title }}</td>
+            <td>{{ value.detail }}</td>
+            <td>{{ value.createdBy }}</td>
           </tr>
         </tbody>
       </template>

@@ -30,7 +30,7 @@ export const actions = {
   registerOnValue: (context) => {
     const uid = context.rootGetters['getAuth'].uid
     const db = getDatabase()
-    const todosRef = ref(db, 'users/' + uid + '/todos')
+    const todosRef = ref(db, 'todos/')
     onValue(todosRef, (snapshot) => {
       const data = snapshot.val()
       context.commit('setData', data)
@@ -41,18 +41,19 @@ export const actions = {
     const db = getDatabase()
 
     // Get a key for a new Post.
-    const iid = push(child(ref(db), 'users/' + uid + '/todos')).key
+    const iid = push(child(ref(db), 'todos/')).key
 
     // A post entry.
     const postData = {
       title: payload.title,
       detail: payload.detail,
+      createdBy: uid,
     }
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates = {}
     // updates['/posts/' + newPostKey] = postData
-    updates['users/' + uid + '/todos/' + iid] = postData
+    updates['todos/' + iid] = postData
 
     update(ref(db), updates)
   },
@@ -82,6 +83,6 @@ export const actions = {
   deleteData(context, iid) {
     const uid = context.rootGetters['getAuth'].uid
     const db = getDatabase()
-    remove(ref(db, 'users/' + uid + '/todos/' + iid))
+    remove(ref(db, 'todos/' + iid))
   },
 }

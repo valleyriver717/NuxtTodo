@@ -60,6 +60,10 @@ export const actions = {
   logout(context) {
     const auth = getAuth()
     auth.signOut()
+    this.commit('setAuth', {
+      uid: '',
+      displayName: '',
+    })
     this.$router.push('/login')
   },
 }

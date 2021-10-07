@@ -5,7 +5,7 @@
         <v-container>
           <div class="form">
             <p class="error">
-              {{ this.$store.getters['auth/getError'].error_message }}
+              {{ this.$store.getters['getError'].error_message }}
             </p>
             <h1>SIGNIN PAGE</h1>
             <v-text-field
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     signin() {
-      this.$store.dispatch('auth/signin', { mail: this.mail, pass: this.pass })
+      this.$store.dispatch('signin', { mail: this.mail, pass: this.pass })
     },
   },
 }
