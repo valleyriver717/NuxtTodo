@@ -55,12 +55,12 @@ export const actions = {
       title: payload.title,
       detail: payload.detail,
       createdBy: uid,
+      createdAt: new Date().toLocaleString(),
       isDone: false,
     }
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates = {}
-    // updates['/posts/' + newPostKey] = postData
     updates['todos/' + iid] = postData
 
     update(ref(db), updates)
@@ -70,10 +70,8 @@ export const actions = {
     get(child(dbRef, `todos/${iid}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          // console.log(snapshot.val())
           return snapshot.val()
         } else {
-          // console.log('No data available')
           return null
         }
       })
@@ -86,7 +84,6 @@ export const actions = {
     get(child(dbRef, 'todos/'))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          // return snapshot.val()
           context.commit('setData', snapshot.val())
         } else {
           return null
@@ -97,7 +94,6 @@ export const actions = {
       })
   },
   updateData(context) {
-    // const uid = context.rootGetters['getAuth'].uid
     const db = getDatabase()
     set(ref(db, 'users/' + uid + '/todos/-MlEhkHZIVtgx43v7KAU'), {
       title: 'abc',
@@ -105,10 +101,9 @@ export const actions = {
     })
   },
   updateDataOnlyIsDone(context, { iid, isDone }) {
-    // const uid = context.rootGetters['getAuth'].uid
     const db = getDatabase()
     set(ref(db, 'todos/' + iid + '/isDone'), isDone).then((resp) => {
-      console.log('done.')
+      // console.log('done.')
     })
   },
   deleteData(context, iid) {

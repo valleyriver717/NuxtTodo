@@ -2,8 +2,7 @@
   <section class="container">
     <h1>TODOS PAGE</h1>
     <v-btn color="success" @click="createData">CREATE</v-btn>
-    <p>{{ isDone }}</p>
-    <p>{{ this.$store.getters['getAuth'].uid }}</p>
+    <p>Logged in by : {{ this.$store.getters['getAuth'].uid }}</p>
     <v-simple-table dence>
       <template v-slot:default>
         <thead>
@@ -12,6 +11,7 @@
             <th class="text-left">ITEM ID</th>
             <th class="text-left">TITLE</th>
             <th class="text-left">DETAIL</th>
+            <!-- <th class="text-left">CREATED AT</th> -->
             <th class="text-left">CREATED BY</th>
             <th class="text-left">DELETE</th>
           </tr>
@@ -26,6 +26,7 @@
             <td>{{ key }}</td>
             <td>{{ value.title }}</td>
             <td>{{ value.detail }}</td>
+            <!-- <td>{{ value.createdAt }}</td> -->
             <td>{{ value.createdBy }}</td>
             <td>
               <v-icon left @click="deleteData(key)">
@@ -70,9 +71,7 @@ export default {
 
     this.readDataAll()
     const allData = this.$store.getters['data/getAllData']
-    console.log(allData)
     for (const [key, value] of Object.entries(allData)) {
-      console.log(`${key}: ${value}`)
       if(value.isDone){
         this.isDone.push(key)
       }
