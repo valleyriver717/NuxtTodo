@@ -56,18 +56,26 @@ export default {
     isDone: function (newValue, oldValue) {
       const newOne = newValue.filter((item) => oldValue.indexOf(item) == -1)
       if (newOne.length !== 0) {
-        // console.log(newOne + 'が追加された')
         this.updateDataOnlyIsDone(newOne, true)
       }
       const oldOne = oldValue.filter((item) => newValue.indexOf(item) == -1)
       if (oldOne.length !== 0) {
-        // console.log(oldOne + 'が削除された')
         this.updateDataOnlyIsDone(oldOne, false)
       }
     },
   },
   mounted: function () {
     this.$store.dispatch('data/registerOnValue')
+
+    this.readDataAll()
+    const allData = this.$store.getters['data/getAllData']
+    console.log(allData)
+    for (const [key, value] of Object.entries(allData)) {
+      console.log(`${key}: ${value}`)
+      if(value.isDone){
+        this.isDone.push(key)
+      }
+    }
   },
   methods: {
     sleep: (waitTime) =>
@@ -80,6 +88,9 @@ export default {
     },
     readData: function (iid) {
       this.$store.dispatch('data/readData', iid)
+    },
+    readDataAll: function () {
+      this.$store.dispatch('data/readDataAll')
     },
     updateData: function () {
       this.$store.dispatch('data/updataData')

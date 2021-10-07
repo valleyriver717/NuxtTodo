@@ -12,10 +12,14 @@ import {
 
 export const state = () => ({
   data: {},
+  allData: {},
 })
 
 export const mutations = {
   setData(state, data) {
+    state.data = data
+  },
+  setAllData(state, data) {
     state.data = data
   },
 }
@@ -24,6 +28,9 @@ export const getters = {
   getData(state) {
     return state.data
   },
+  getAllData(state) {
+    return state.data
+  }
 }
 
 export const actions = {
@@ -59,7 +66,6 @@ export const actions = {
     update(ref(db), updates)
   },
   readData(context, iid) {
-    // const uid = context.rootGetters['getAuth'].uid
     const dbRef = ref(getDatabase())
     get(child(dbRef, `todos/${iid}`))
       .then((snapshot) => {
@@ -68,6 +74,21 @@ export const actions = {
           return snapshot.val()
         } else {
           // console.log('No data available')
+          return null
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  },
+  readDataAll(context) {
+    const dbRef = ref(getDatabase())
+    get(child(dbRef, 'todos/'))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // return snapshot.val()
+          context.commit('setData', snapshot.val())
+        } else {
           return null
         }
       })
