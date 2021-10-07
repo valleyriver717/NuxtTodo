@@ -70,6 +70,8 @@ export default {
     this.$store.dispatch('data/registerOnValue')
   },
   methods: {
+    sleep: (waitTime) =>
+      new Promise((resolve) => setTimeout(resolve, waitTime)),
     createData: function () {
       this.$store.dispatch('data/createData', {
         title: this.title,
@@ -83,16 +85,14 @@ export default {
       this.$store.dispatch('data/updataData')
     },
     updateDataOnlyIsDone: function (iid, isDone) {
-      // 先にiidごと削除されてしまった場合の回避ようif文
-      if (this.$store.dispatch('data/readData', iid).title !== undefined) {
-        this.$store.dispatch('data/updateDataOnlyIsDone', {
-          iid: iid,
-          isDone: isDone,
-        })
-      }
+      this.$store.dispatch('data/updateDataOnlyIsDone', {
+        iid: iid,
+        isDone: isDone,
+      })
     },
-    deleteData: function (iid) {
+    deleteData: async function (iid) {
       this.isDone = this.isDone.filter((item) => !item.match(iid))
+      await this.sleep(1)
       this.$store.dispatch('data/deleteData', iid)
     },
   },
