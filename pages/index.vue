@@ -1,5 +1,5 @@
 <template>
-  <section class="contai">
+  <section class="container">
     <h1>MY PAGE</h1>
     <router-link to="/login">GO TO LOGIN PAGE</router-link>
     <br />
@@ -12,12 +12,10 @@
 </template>
 
 <script>
-import { getAuth } from 'firebase/auth'
-
 export default {
   methods: {
     logout: function () {
-      this.$store.dispatch('logout')
+      this.$store.dispatch('auth/logout')
     },
   },
 }

@@ -1,6 +1,8 @@
 <template>
   <section class="container">
-    <p class="error">{{ this.$store.getters.getError.error_message }}</p>
+    <p class="error">
+      {{ this.$store.getters['auth/getError'].error_message }}
+    </p>
     <h1>LOGIN PAGE</h1>
     <v-app>
       <v-form>
@@ -27,7 +29,7 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('login', { mail: this.mail, pass: this.pass })
+      this.$store.dispatch('auth/login', { mail: this.mail, pass: this.pass })
     },
   },
 }
