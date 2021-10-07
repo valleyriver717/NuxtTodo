@@ -20,6 +20,7 @@
           <tr
             v-for="(value, key) in $store.getters['data/getData']"
             v-bind:key="key"
+            v-bind:class="{done: value.isDone}"
           >
             <td><v-checkbox v-model="isDone" :value="key"></v-checkbox></td>
             <td>{{ key }}</td>
@@ -111,7 +112,7 @@ export default {
 </script>
 
 <style scoped>
-tbody tr td {
-  /* text-decoration: line-through; */
+.done {
+  text-decoration: line-through;
 }
 </style>
