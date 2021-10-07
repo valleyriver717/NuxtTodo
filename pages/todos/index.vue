@@ -2,21 +2,27 @@
   <section class="container">
     <h1>TODOS PAGE</h1>
     <v-btn color="success" @click="createData">CREATE</v-btn>
-    <v-btn color="success" @click="readData">READ</v-btn>
-    <v-btn color="success" @click="updateData">UPDATE</v-btn>
-    <v-btn color="success" @click="deleteData">DELETE</v-btn>
-    <p>{{ $store.getters['getAuth'] }}</p>
-    <v-text-field label="タイトル" v-model="title"></v-text-field>
-    <v-text-field label="詳細" v-model="detail"></v-text-field>
-    <ul>
-      <li
-        v-for="(value, key) in $store.getters['getData']"
-        v-bind:key="key"
-        @click="deleteData(key)"
-      >
-        {{ value.title }} {{ value.detail }} {{ key }}
-      </li>
-    </ul>
+    <v-simple-table dence>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">USER ID</th>
+            <th class="text-left">ITEM ID</th>
+            <th class="text-left">TITLE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(value, key) in $store.getters['getData']"
+            v-bind:key="key"
+          >
+            <td>uid</td>
+            <td @click="deleteData(key)">{{ key }}</td>
+            <td>{{ value.title }}</td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
   </section>
 </template>
 
@@ -24,8 +30,8 @@
 export default {
   data() {
     return {
-      title: '',
-      detail: '',
+      title: 'title',
+      detail: 'detail',
     }
   },
   mounted: function () {
