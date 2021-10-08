@@ -33,7 +33,7 @@
             v-bind:class="{ done: value.isDone }"
             @click="selectItem(key)"
           >
-            <td><v-checkbox v-model="isDone" :value="key"></v-checkbox></td>
+            <td><v-checkbox v-model="isDone" :value="key" @click.stop=""></v-checkbox></td>
             <td>{{ key }}</td>
             <td>{{ value.title }}</td>
             <td>{{ value.detail }}</td>
@@ -41,7 +41,7 @@
             <td>{{ value.createdBy }}</td>
             <!-- <td>{{ value.comment }}</td> -->
             <td>
-              <v-icon left @click="deleteData(key)">
+              <v-icon left @click.stop="deleteData(key)">
                 {{ icons.mdiDelete }}
               </v-icon>
             </td>
@@ -83,9 +83,11 @@ export default {
 
     this.readDataAll()
     const allData = this.$store.getters['data/getData']
-    for (const [key, value] of Object.entries(allData)) {
-      if (value.isDone) {
-        this.isDone.push(key)
+    if (allData) {
+      for (const [key, value] of Object.entries(allData)) {
+        if (value.isDone) {
+          this.isDone.push(key)
+        }
       }
     }
   },
@@ -97,7 +99,8 @@ export default {
       alert('ログアウトしました')
     },
     selectItem: function (iid) {
-      console.log("test" + iid)
+      console.log('test' + iid)
+      this.$router.push('/todos/' + iid)
     },
     createData: function () {
       this.$store.dispatch('data/createData', {
