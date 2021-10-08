@@ -13,6 +13,8 @@
 
 <script>
 export default {
+  mounted: function () {
+  },
   methods: {
     logout: function () {
       this.$store.dispatch('logout')

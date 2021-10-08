@@ -8,6 +8,13 @@ export default function ({ route, store, redirect }) {
   })
   // アクセス権を管理
   getAuth().onAuthStateChanged((user) => {
+    // 強制リダイレクト
+    switch (route.name) {
+      case 'index':
+        redirect('/todos')
+        break
+    }
+    // アクセス権制御
     if (user) {
       switch (route.name) {
         case 'login':

@@ -1,10 +1,17 @@
 <template>
   <section class="container">
     <h1>TODOS PAGE</h1>
+    <v-row justify="end">
+      <v-btn v-show="this.$store.getters['getAuth'].uid != ''" @click="logout"
+        >LOGOUT</v-btn
+      >
+      <v-btn v-show="this.$store.getters['getAuth'].uid == ''" to="/login"
+        >LOGIN</v-btn
+      >
+    </v-row>
     <v-text-field label="title" id="id" v-model="title"></v-text-field>
     <v-text-field label="detail" id="id" v-model="detail"></v-text-field>
     <v-btn color="success" @click="createData">CREATE</v-btn>
-    <p>Logged in by : {{ this.$store.getters['getAuth'].uid }}</p>
     <v-simple-table dence>
       <template v-slot:default>
         <thead>
@@ -24,6 +31,7 @@
             v-for="(value, key) in $store.getters['data/getData']"
             v-bind:key="key"
             v-bind:class="{ done: value.isDone }"
+            @click="selectItem(key)"
           >
             <td><v-checkbox v-model="isDone" :value="key"></v-checkbox></td>
             <td>{{ key }}</td>
@@ -84,6 +92,13 @@ export default {
   methods: {
     sleep: (waitTime) =>
       new Promise((resolve) => setTimeout(resolve, waitTime)),
+    logout: function () {
+      this.$store.dispatch('logout')
+      alert('ログアウトしました')
+    },
+    selectItem: function (iid) {
+      console.log("test" + iid)
+    },
     createData: function () {
       this.$store.dispatch('data/createData', {
         title: this.title,

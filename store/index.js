@@ -64,6 +64,6 @@ export const actions = {
       uid: '',
       displayName: '',
     })
-    this.$router.push('/login')
+    this.$router.push('/todos')
   },
 }
