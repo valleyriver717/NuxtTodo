@@ -99,7 +99,6 @@ export default {
       alert('ログアウトしました')
     },
     selectItem: function (iid) {
-      console.log('test' + iid)
       this.$router.push('/todos/' + iid)
     },
     createData: function () {

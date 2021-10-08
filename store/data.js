@@ -50,6 +50,7 @@ export const actions = {
       createdBy: uid,
       createdAt: new Date().toLocaleString(),
       isDone: false,
+      comment: '',
     }
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
@@ -97,6 +98,12 @@ export const actions = {
     const db = getDatabase()
     set(ref(db, 'todos/' + iid + '/isDone'), isDone).then((resp) => {
       // console.log('done.')
+    })
+  },
+  updateDataOnlyComment(context, { iid, comment}) {
+    const db = getDatabase()
+    set(ref(db, 'todos/' + iid + '/comment'), comment).then((resp) => {
+      console.log('done.')
     })
   },
   deleteData(context, iid) {

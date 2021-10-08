@@ -1,41 +1,81 @@
 <template>
   <section class="container">
-    <p>{{ $route.params.id }}</p>
-    <v-simple-table dence>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">DONE</th>
-            <th class="text-left">ITEM ID</th>
-            <th class="text-left">TITLE</th>
-            <th class="text-left">DETAIL</th>
-            <!-- <th class="text-left">CREATED AT</th> -->
-            <th class="text-left">CREATED BY</th>
-            <!-- <th class="text-left">COMMENT</th> -->
-            <th class="text-left">DELETE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(value, key) in $store.getters['data/getData']"
-            v-bind:key="key"
-            v-bind:class="{ done: value.isDone }"
-            @click="selectItem(key)"
-          >
-            <td><v-checkbox v-model="isDone" :value="key"></v-checkbox></td>
-            <td>{{ key }}</td>
-            <td>{{ value.title }}</td>
-            <td>{{ value.detail }}</td>
-            <!-- <td>{{ value.createdAt }}</td> -->
-            <td>{{ value.createdBy }}</td>
-            <!-- <td>{{ value.comment }}</td> -->
-            <td>
-              <v-icon left @click="deleteData(key)">
-              </v-icon>
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+    <h1>ITEM ID : {{ $route.params.id }} のページ</h1>
+    <v-card>
+      <v-card-title class="subheading font-weight-bold">
+        {{ $route.params.id }}
+      </v-card-title>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item>
+          <v-list-item-content>タイトル</v-list-item-content>
+          <v-list-item-content class="align-end">
+            {{ title }}
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>詳細</v-list-item-content>
+          <v-list-item-content class="align-end">
+            {{ detail }}
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>ステータス</v-list-item-content>
+          <v-list-item-content class="align-end">
+            {{ isDone ? '完了' : '未完了' }}
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>コメント</v-list-item-content>
+          <v-list-item-content class="align-end">
+            {{ comment }}
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card>
+    <v-text-field label="comment" v-model="newComment"></v-text-field>
+    <v-btn color="success" @click="addComment">ADD COMMENT</v-btn>
+      <v-row justify="end">
+        <v-btn>編集</v-btn>
+      </v-row>
   </section>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      key: '',
+      title: '',
+      detail: '',
+      isDone: false,
+      comment: '',
+      newComment: '',
+    }
+  },
+  mounted: function () {
+    const allData = this.$store.getters['data/getData']
+    this.key = this.$route.params.id
+    const data = allData[this.key]
+    this.title = data.title
+    this.detail = data.detail
+    this.isDone = data.isDone
+    this.comment = data.comment
+    console.log(this.comment)
+  },
+  methods: {
+    addComment: function () {
+      this.comment = this.newComment
+      this.updateDataOnlyComment(this.key, this.comment)
+    },
+    updateDataOnlyComment: function (iid, comment) {
+      this.$store.dispatch('data/updateDataOnlyComment', {
+        iid: iid,
+        comment: comment,
+      })
+    },
+  },
+}
+</script>
