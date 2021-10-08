@@ -1,6 +1,8 @@
 <template>
   <section class="container">
     <h1>TODOS PAGE</h1>
+    <v-text-field label="title" id="id" v-model="title"></v-text-field>
+    <v-text-field label="detail" id="id" v-model="detail"></v-text-field>
     <v-btn color="success" @click="createData">CREATE</v-btn>
     <p>Logged in by : {{ this.$store.getters['getAuth'].uid }}</p>
     <v-simple-table dence>
@@ -13,6 +15,7 @@
             <th class="text-left">DETAIL</th>
             <!-- <th class="text-left">CREATED AT</th> -->
             <th class="text-left">CREATED BY</th>
+            <!-- <th class="text-left">COMMENT</th> -->
             <th class="text-left">DELETE</th>
           </tr>
         </thead>
@@ -20,7 +23,7 @@
           <tr
             v-for="(value, key) in $store.getters['data/getData']"
             v-bind:key="key"
-            v-bind:class="{done: value.isDone}"
+            v-bind:class="{ done: value.isDone }"
           >
             <td><v-checkbox v-model="isDone" :value="key"></v-checkbox></td>
             <td>{{ key }}</td>
@@ -28,6 +31,7 @@
             <td>{{ value.detail }}</td>
             <!-- <td>{{ value.createdAt }}</td> -->
             <td>{{ value.createdBy }}</td>
+            <!-- <td>{{ value.comment }}</td> -->
             <td>
               <v-icon left @click="deleteData(key)">
                 {{ icons.mdiDelete }}
@@ -46,8 +50,8 @@ import { mdiDelete } from '@mdi/js'
 export default {
   data() {
     return {
-      title: 'title',
-      detail: 'detail',
+      title: '',
+      detail: '',
       isDone: [],
       icons: {
         mdiDelete,
@@ -70,9 +74,9 @@ export default {
     this.$store.dispatch('data/registerOnValue')
 
     this.readDataAll()
-    const allData = this.$store.getters['data/getAllData']
+    const allData = this.$store.getters['data/getData']
     for (const [key, value] of Object.entries(allData)) {
-      if(value.isDone){
+      if (value.isDone) {
         this.isDone.push(key)
       }
     }
@@ -85,6 +89,8 @@ export default {
         title: this.title,
         detail: this.detail,
       })
+      this.title = ''
+      this.detail = ''
     },
     readData: function (iid) {
       this.$store.dispatch('data/readData', iid)

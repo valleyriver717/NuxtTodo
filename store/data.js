@@ -12,14 +12,10 @@ import {
 
 export const state = () => ({
   data: {},
-  allData: {},
 })
 
 export const mutations = {
   setData(state, data) {
-    state.data = data
-  },
-  setAllData(state, data) {
     state.data = data
   },
 }
@@ -28,9 +24,6 @@ export const getters = {
   getData(state) {
     return state.data
   },
-  getAllData(state) {
-    return state.data
-  }
 }
 
 export const actions = {
