@@ -77,7 +77,6 @@ export default {
 
   router: {
     middleware: ['auth'],
-    base: '/my-nuxt-project/',
   },
 
   generate: {
