@@ -32,7 +32,6 @@ export const mutations = {
 
 export const getters = {
   getError(state) {
-    console.log(state.error)
     return state.error
   },
   getAuth(state) {
