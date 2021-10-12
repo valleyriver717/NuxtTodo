@@ -59,21 +59,7 @@ export const actions = {
 
     update(ref(db), updates)
   },
-  readData(context, iid) {
-    const dbRef = ref(getDatabase())
-    get(child(dbRef, `todos/${iid}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          return snapshot.val()
-        } else {
-          return null
-        }
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  },
-  readDataAll(context) {
+  readData(context) {
     const dbRef = ref(getDatabase())
     get(child(dbRef, 'todos/'))
       .then((snapshot) => {
@@ -87,28 +73,20 @@ export const actions = {
         console.error(error)
       })
   },
-  updateData(context) {
+  updateData(context, payload) {
+    console.log(payload)
     const db = getDatabase()
-    set(ref(db, 'users/' + uid + '/todos/-MlEhkHZIVtgx43v7KAU'), {
-      title: 'abc',
-      detail: 'def',
-    })
-  },
-  updateDataOnlyIsDone(context, { iid, isDone }) {
-    const db = getDatabase()
-    set(ref(db, 'todos/' + iid + '/isDone'), isDone).then((resp) => {
-      // console.log('done.')
-    })
-  },
-  updateDataOnlyComment(context, { iid, comment}) {
-    const db = getDatabase()
-    set(ref(db, 'todos/' + iid + '/comment'), comment).then((resp) => {
-      console.log('done.')
+    set(
+      ref(db, 'todos/' + payload.iid + '/' + payload.key),
+      payload.value
+    ).then((resp) => {
+      console.log('done!')
     })
   },
   deleteData(context, iid) {
-    // const uid = context.rootGetters['getAuth'].uid
     const db = getDatabase()
-    remove(ref(db, 'todos/' + iid))
+    remove(ref(db, 'todos/' + iid)).then((resp) => {
+      console.log('done')
+    })
   },
 }

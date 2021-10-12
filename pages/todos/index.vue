@@ -2,10 +2,11 @@
   <section class="container">
     <h1>TODOS PAGE</h1>
     <v-row justify="end">
-      <v-btn v-show="this.$store.getters['getAuth'].uid != ''" @click="logout"
+      <p>{{ this.$store.getters['getAuth'].uid }}</p>
+      <v-btn v-show="this.$store.getters['getAuth'].uid" @click="logout"
         >LOGOUT</v-btn
       >
-      <v-btn v-show="this.$store.getters['getAuth'].uid == ''" to="/login"
+      <v-btn v-show="!this.$store.getters['getAuth'].uid" to="/login"
         >LOGIN</v-btn
       >
     </v-row>
@@ -28,20 +29,26 @@
         </thead>
         <tbody>
           <tr
-            v-for="(value, key) in $store.getters['data/getData']"
-            v-bind:key="key"
-            v-bind:class="{ done: value.isDone }"
-            @click="selectItem(key)"
+            v-for="(attr, iid) in allData"
+            v-bind:key="iid"
+            v-bind:class="{ done: attr.isDone }"
+            @click="selectItem(iid)"
           >
-            <td><v-checkbox v-model="isDone" :value="key" @click.stop=""></v-checkbox></td>
-            <td>{{ key }}</td>
-            <td>{{ value.title }}</td>
-            <td>{{ value.detail }}</td>
-            <!-- <td>{{ value.createdAt }}</td> -->
-            <td>{{ value.createdBy }}</td>
-            <!-- <td>{{ value.comment }}</td> -->
             <td>
-              <v-icon left @click.stop="deleteData(key)">
+              <v-checkbox
+                v-bind:checked="attr.isDone"
+                @click.stop="updateData(iid, 'isDone', !attr.isDone)"
+              ></v-checkbox>
+              <p>{{ attr.isDone }}</p>
+            </td>
+            <td>{{ iid }}</td>
+            <td>{{ attr.title }}</td>
+            <td>{{ attr.detail }}</td>
+            <!-- <td>{{ prop.createdAt }}</td> -->
+            <td>{{ attr.createdBy }}</td>
+            <!-- <td>{{ prop.comment }}</td> -->
+            <td>
+              <v-icon left @click.stop="deleteData(iid)">
                 {{ icons.mdiDelete }}
               </v-icon>
             </td>
@@ -60,40 +67,24 @@ export default {
     return {
       title: '',
       detail: '',
-      isDone: [],
+      allData: null,
       icons: {
         mdiDelete,
       },
     }
   },
-  watch: {
-    isDone: function (newValue, oldValue) {
-      const newOne = newValue.filter((item) => oldValue.indexOf(item) == -1)
-      if (newOne.length !== 0) {
-        this.updateDataOnlyIsDone(newOne, true)
-      }
-      const oldOne = oldValue.filter((item) => newValue.indexOf(item) == -1)
-      if (oldOne.length !== 0) {
-        this.updateDataOnlyIsDone(oldOne, false)
-      }
-    },
-  },
   mounted: function () {
+    console.log(this.$store.getters['getAuth'].uid)
+
     this.$store.dispatch('data/registerOnValue')
 
-    this.readDataAll()
-    const allData = this.$store.getters['data/getData']
-    if (allData) {
-      for (const [key, value] of Object.entries(allData)) {
-        if (value.isDone) {
-          this.isDone.push(key)
-        }
-      }
-    }
+    this.readData()
+    const tmpData = this.$store.getters['data/getData']
+    this.allData = { ...tmpData }
   },
   methods: {
     sleep: (waitTime) =>
-      new Promise((resolve) => setTimeout(resolve, waitTime)),
+      -new Promise((resolve) => setTimeout(resolve, waitTime)),
     logout: function () {
       this.$store.dispatch('logout')
       alert('ログアウトしました')
@@ -108,26 +99,29 @@ export default {
       })
       this.title = ''
       this.detail = ''
+      const tmpData = this.$store.getters['data/getData']
+      this.allData = { ...tmpData }
     },
-    readData: function (iid) {
-      this.$store.dispatch('data/readData', iid)
+    readData: function () {
+      this.$store.dispatch('data/readData')
     },
-    readDataAll: function () {
-      this.$store.dispatch('data/readDataAll')
-    },
-    updateData: function () {
-      this.$store.dispatch('data/updataData')
-    },
-    updateDataOnlyIsDone: function (iid, isDone) {
-      this.$store.dispatch('data/updateDataOnlyIsDone', {
-        iid: iid,
-        isDone: isDone,
+    updateData: function (iid, key, value) {
+      console.log(value)
+      this.allData.isDone = !value
+      this.$store.dispatch('data/updateData', {
+        iid,
+        key,
+        value,
       })
+      this.allData = this.$store.getters['data/getData']
+      // const tmpData = this.$store.getters['data/getData']
+      // this.allData = { ...tmpData }
     },
-    deleteData: async function (iid) {
-      this.isDone = this.isDone.filter((item) => !item.match(iid))
-      await this.sleep(1)
+    deleteData: function (iid) {
       this.$store.dispatch('data/deleteData', iid)
+      console.log('test')
+      const tmpData = this.$store.getters['data/getData']
+      this.allData = { ...tmpData }
     },
   },
 }
