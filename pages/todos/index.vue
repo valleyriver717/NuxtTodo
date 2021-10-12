@@ -36,17 +36,16 @@
           >
             <td>
               <v-checkbox
-                v-bind:checked="attr.isDone"
+                v-bind:input-value="attr.isDone"
                 @click.stop="updateData(iid, 'isDone', !attr.isDone)"
               ></v-checkbox>
-              <p>{{ attr.isDone }}</p>
             </td>
             <td>{{ iid }}</td>
             <td>{{ attr.title }}</td>
             <td>{{ attr.detail }}</td>
-            <!-- <td>{{ prop.createdAt }}</td> -->
+            <!-- <td>{{ attr.createdAt }}</td> -->
             <td>{{ attr.createdBy }}</td>
-            <!-- <td>{{ prop.comment }}</td> -->
+            <!-- <td>{{ attr.comment }}</td> -->
             <td>
               <v-icon left @click.stop="deleteData(iid)">
                 {{ icons.mdiDelete }}
@@ -74,17 +73,12 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.$store.getters['getAuth'].uid)
-
     this.$store.dispatch('data/registerOnValue')
 
     this.readData()
-    const tmpData = this.$store.getters['data/getData']
-    this.allData = { ...tmpData }
+    this.allData = this.$store.getters['data/getData']
   },
   methods: {
-    sleep: (waitTime) =>
-      -new Promise((resolve) => setTimeout(resolve, waitTime)),
     logout: function () {
       this.$store.dispatch('logout')
       alert('ログアウトしました')
@@ -99,29 +93,23 @@ export default {
       })
       this.title = ''
       this.detail = ''
-      const tmpData = this.$store.getters['data/getData']
-      this.allData = { ...tmpData }
+      this.allData = this.$store.getters['data/getData']
     },
     readData: function () {
       this.$store.dispatch('data/readData')
     },
     updateData: function (iid, key, value) {
-      console.log(value)
       this.allData.isDone = !value
       this.$store.dispatch('data/updateData', {
-        iid,
-        key,
-        value,
+        iid: iid,
+        key: key,
+        value: value,
       })
       this.allData = this.$store.getters['data/getData']
-      // const tmpData = this.$store.getters['data/getData']
-      // this.allData = { ...tmpData }
     },
     deleteData: function (iid) {
       this.$store.dispatch('data/deleteData', iid)
-      console.log('test')
-      const tmpData = this.$store.getters['data/getData']
-      this.allData = { ...tmpData }
+      this.allData = this.$store.getters['data/getData']
     },
   },
 }

@@ -74,19 +74,18 @@ export const actions = {
       })
   },
   updateData(context, payload) {
-    console.log(payload)
     const db = getDatabase()
     set(
       ref(db, 'todos/' + payload.iid + '/' + payload.key),
       payload.value
     ).then((resp) => {
-      console.log('done!')
+      // console.log('done!')
     })
   },
   deleteData(context, iid) {
     const db = getDatabase()
     remove(ref(db, 'todos/' + iid)).then((resp) => {
-      console.log('done')
+      // console.log('done')
     })
   },
 }
