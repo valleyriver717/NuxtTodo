@@ -81,4 +81,8 @@ export default {
     middleware: ['auth'],
     base: '/NuxtTodo/',
   },
+
+  generate: {
+    dir: 'docs',
+  },
 }
