@@ -8,14 +8,20 @@
               {{ this.$store.getters['getError'].error_message }}
             </p>
             <h1>SIGNIN PAGE</h1>
+            <p>ユーザ情報をご入力ください。</p>
             <v-text-field
               outlined
-              label="mailaddress"
+              label="おなまえ"
+              v-model="name"
+            ></v-text-field>
+            <v-text-field
+              outlined
+              label="メールアドレス"
               v-model="mail"
             ></v-text-field>
             <v-text-field
               outlined
-              label="password"
+              label="パスワード"
               v-model="pass"
             ></v-text-field>
             <v-btn color="primary" @click="signin">SIGN IN</v-btn>
@@ -35,11 +41,12 @@ export default {
     return {
       mail: '',
       pass: '',
+      name: '',
     }
   },
   methods: {
     signin() {
-      this.$store.dispatch('signin', { mail: this.mail, pass: this.pass })
+      this.$store.dispatch('signin', { mail: this.mail, pass: this.pass, name: this.name })
     },
   },
 }

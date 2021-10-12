@@ -1,9 +1,9 @@
 <template>
   <section class="container">
-    <h1>ITEM ID : {{ $route.params.id }} のページ</h1>
+    <h1>{{ title }}のページ</h1>
     <v-card>
       <v-card-title class="subheading font-weight-bold">
-        {{ $route.params.id }}
+        {{ title }}
       </v-card-title>
 
       <v-divider></v-divider>
@@ -36,10 +36,10 @@
       </v-list>
     </v-card>
     <v-text-field label="comment" v-model="newComment"></v-text-field>
-    <v-btn color="success" @click="addComment">ADD COMMENT</v-btn>
-      <v-row justify="end">
-        <v-btn>編集</v-btn>
-      </v-row>
+    <v-btn color="normal" @click="addComment">ADD COMMENT</v-btn>
+    <v-row justify="end">
+      <v-btn color="success">編集</v-btn>
+    </v-row>
   </section>
 </template>
 
@@ -68,13 +68,15 @@ export default {
   methods: {
     addComment: function () {
       this.comment = this.newComment
-      this.updateDataOnlyComment(this.key, this.comment)
+      this.updateData(this.key, 'comment', this.comment)
     },
-    updateDataOnlyComment: function (iid, comment) {
-      this.$store.dispatch('data/updateDataOnlyComment', {
+    updateData: function (iid, key, value) {
+      this.$store.dispatch('data/updateData', {
         iid: iid,
-        comment: comment,
+        key: key,
+        value: value,
       })
+      this.allData = this.$store.getters['data/getData']
     },
   },
 }

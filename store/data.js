@@ -37,7 +37,8 @@ export const actions = {
     })
   },
   createData(context, payload) {
-    const uid = context.rootGetters['getAuth'].uid
+    const name = context.rootGetters['getAuth'].name
+    // const uid = context.rootGetters['getAuth'].uid
     const db = getDatabase()
 
     // Get a key for a new Post.
@@ -47,7 +48,7 @@ export const actions = {
     const postData = {
       title: payload.title,
       detail: payload.detail,
-      createdBy: uid,
+      createdBy: name,
       createdAt: new Date().toLocaleString(),
       isDone: false,
       comment: '',

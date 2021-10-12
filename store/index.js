@@ -2,6 +2,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
 } from 'firebase/auth'
 
 export const state = () => ({
@@ -19,8 +20,13 @@ export const mutations = {
     state.error.error_message = error.code + error.message
   },
   setAuth(state, auth) {
-    state.auth.uid = auth.uid
-    state.auth.name = auth.displayName
+    if (auth) {
+      state.auth.uid = auth.uid
+      state.auth.name = auth.displayName
+    } else {
+      state.auth.uid = ''
+      state.auth.name = ''
+    }
   },
 }
 
@@ -46,11 +52,21 @@ export const actions = {
         this.commit('setError', error)
       })
   },
-  signin(context, { mail, pass }) {
+  signin(context, { mail, pass, name }) {
     const auth = getAuth()
     createUserWithEmailAndPassword(auth, mail, pass)
       .then((userCredential) => {
-        this.commit('setAuth', userCredential.user)
+        updateProfile(userCredential.user, {
+          displayName: name,
+        })
+          .then(() => {
+            this.commit('setAuth', userCredential.user)
+            console.log('Profile updated!!')
+          })
+          .catch((error) => {
+            this.commit('setError', error)
+            console.log(error)
+          })
         this.$router.push('/')
       })
       .catch((error) => {
@@ -60,10 +76,7 @@ export const actions = {
   logout(context) {
     const auth = getAuth()
     auth.signOut()
-    this.commit('setAuth', {
-      uid: '',
-      displayName: '',
-    })
+    this.commit('setAuth', null)
     this.$router.push('/todos')
   },
 }
