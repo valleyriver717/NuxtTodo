@@ -1,6 +1,7 @@
 <template>
   <section class="container">
     <h1>{{ title }}のページ</h1>
+    <router-link to="/todos">TOPページへ</router-link>
     <v-card>
       <v-card-title class="subheading font-weight-bold">
         {{ title }}
@@ -56,7 +57,10 @@
     <v-text-field label="comment" v-model="newComment"></v-text-field>
     <v-btn color="normal" @click="addComment">ADD COMMENT</v-btn>
     <v-row justify="end">
-      <v-btn color="success" @click="moveToEditPage($route.params.id)"
+      <v-btn
+        color="success"
+        v-if="this.$store.getters['getAuth'].name === createdBy"
+        @click="moveToEditPage($route.params.id)"
         >編集</v-btn
       >
     </v-row>

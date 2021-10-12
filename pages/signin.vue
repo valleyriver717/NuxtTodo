@@ -31,6 +31,7 @@
           </div>
         </v-container>
       </v-form>
+      <router-link to="/todos">TOPページへ</router-link>
     </v-app>
   </section>
 </template>
@@ -46,7 +47,11 @@ export default {
   },
   methods: {
     signin() {
-      this.$store.dispatch('signin', { mail: this.mail, pass: this.pass, name: this.name })
+      this.$store.dispatch('signin', {
+        mail: this.mail,
+        pass: this.pass,
+        name: this.name,
+      })
     },
   },
 }

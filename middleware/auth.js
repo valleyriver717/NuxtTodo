@@ -29,6 +29,9 @@ export default function ({ route, store, redirect }) {
         case 'index':
           redirect('/login')
           break
+        case 'todos-:id-edit':
+          redirect('/login')
+          break
       }
     }
   })
