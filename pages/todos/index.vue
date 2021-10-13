@@ -101,7 +101,7 @@ export default {
       alert('ログアウトしました')
     },
     selectItem: function (iid) {
-      this.$router.push('/todos/' + iid)
+      this.$router.push('/todos/' + iid + '/')
     },
     createData: function () {
       this.$store.dispatch('data/createData', {

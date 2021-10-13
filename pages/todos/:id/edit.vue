@@ -92,7 +92,7 @@ export default {
       this.updateData(this.$route.params.id, 'detail', this.detail)
       this.updateData(this.$route.params.id, 'isDone', this.isDone)
       this.updateData(this.$route.params.id, 'comment', this.comment)
-      this.$router.push('/todos/' + this.$route.params.id)
+      this.$router.push('/todos/' + this.$route.params.id + '/')
     },
     readData: function () {
       this.$store.dispatch('data/readData')

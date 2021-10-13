@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <h1>{{ title }}のページ</h1>
-    <router-link to="/todos">TOPページへ</router-link>
+    <router-link to="/todos/">TOPページへ</router-link>
     <v-card>
       <v-card-title class="subheading font-weight-bold">
         {{ title }}
@@ -112,7 +112,7 @@ export default {
       this.allData = this.$store.getters['data/getData']
     },
     moveToEditPage: function (iid) {
-      this.$router.push('/todos/' + iid + '/edit')
+      this.$router.push('/todos/' + iid + '/edit/')
     },
   },
 }
