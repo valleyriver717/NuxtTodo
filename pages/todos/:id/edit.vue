@@ -1,6 +1,7 @@
 <template>
   <section class="container">
     <h1>{{ title }}の編集ページ</h1>
+    <router-link to="/todos/">TOPページへ</router-link>
     <v-card>
       <v-card-title class="subheading font-weight-bold">
         {{ title }}
