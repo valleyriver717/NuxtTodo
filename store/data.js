@@ -32,7 +32,23 @@ export const actions = {
     const db = getDatabase()
     const todosRef = ref(db, 'todos/')
     onValue(todosRef, (snapshot) => {
-      const data = snapshot.val()
+      let data = snapshot.val()
+      if (snapshot.exists()) {
+        var pairs = Object.entries(data)
+        console.log(pairs.length)
+        if (pairs.length > 1) {
+          pairs.sort(function (p1, p2) {
+            var p1Val = p1[1].timestamp,
+              p2Val = p2[1].timestamp
+            if (p1Val > p2Val) return -1
+            else return 1
+          })
+          data = Object.fromEntries(pairs)
+          context.commit('setData', data)
+        } else {
+          context.commit('setData', data)
+        }
+      }
       context.commit('setData', data)
     })
   },
@@ -50,6 +66,7 @@ export const actions = {
       detail: payload.detail,
       createdBy: name,
       createdAt: new Date().toLocaleString(),
+      timestamp: new Date().getTime(),
       isDone: false,
       comment: '',
     }
